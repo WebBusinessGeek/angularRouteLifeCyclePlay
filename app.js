@@ -2,7 +2,7 @@ var app = angular.module('app',['ngRoute']);
 
 
 //configure routes and catchall handling with otherwise
-app.config(function($routeProvider, $locationProvider){
+app.config(function($routeProvider){
 	$routeProvider
 		.when('/',{
 			template:'<h4>The view attached to the </h4>'+
