@@ -5,19 +5,43 @@ var app = angular.module('app',['ngRoute']);
 app.config(function($routeProvider, $locationProvider){
 	$routeProvider
 		.when('/',{
-			template: 'this is the home page'
+			template: '<h3>The view attached to the home route would be showing now</h3>'
 			
 		})
 		.when('/regular',{
-			template: 'this is the regular route'
+			template: '<h3>The view attached to the regular route would be showing now</h3>'
 			
 		})
 		.when('/delayed',{
-			template: 'this is the delayed route'
+			template: '<h3>The view attached to the Delayed route would be showing now</h3>',
+			resolve: {
+				delay: function($q, $timeout){
+					var defer = $q.defer();
+
+					$timeout(function(){
+						defer.resolve();
+					}, 3000);
+
+					return defer.promise;
+				}
+			}
 			
 		})
 		.when('/error', {
-			template: 'this is the error route'
+			template: 'This view will never show as the route will never resolve',
+			resolve: {
+
+				error: function($q, $timeout){
+					var defer = $q.defer();
+
+					$timeout(function(){
+						defer.reject();
+					}, 300);
+
+					return defer.promise;
+
+				}
+			}
 			
 		})
 		.otherwise({
@@ -45,6 +69,9 @@ app.directive('routeDirective', function(){
 				$scope.finish = 'Scope is finished';
 				
 			});
+			$rootScope.$on('$routeChangeError', function(){
+				console.log('error loading the route');
+			})
 		}
 		
 	}
@@ -61,17 +88,6 @@ app.directive('someController', function(){
 				$scope.check = arg;
 			}
 
-			$scope.delayedView = function(arg){
-				var defer = $q.defer();
-
-
-				$timeout(function(){
-					defer.resolve($location.path(arg));
-					
-				}, 3000);
-
-				
-			}
 
 			$scope.check2 = 'check2';
 
@@ -84,7 +100,7 @@ app.directive('regularRoute', function(){
 		restrict: 'E',
 		template: '<div class="col-md-4">'+
             '<button class="btn btn-success" ng-click="newView(\'/regular\')">'+
-            'regular route and echo start/finish text below </button>{{changing}}{{finish}}'+
+            'regular route and echo start/finish text below </button>'+
         	'</div>',
        require: '^someController',
 		link: function(scope, element, attrs, someController){
@@ -104,8 +120,28 @@ app.directive('delayedRoute', function(){
 	return{
 		restrict: 'E',
 		template: '<div class="col-md-4">'+
-            '<button class="btn btn-success" ng-click="delayedView(\'/delayed\')">'+
-            'regular route and echo start/finish text below </button>{{changing}}{{finish}}'+
+            '<button class="btn btn-success" ng-click="newView(\'/delayed\')">'+
+            'regular route and echo start/finish text below </button>'+
+        	'</div>',
+       require: '^someController',
+		link: function(scope, element, attrs, someController){
+			element.bind('click',function(){
+				if(scope.check == '/delayed'){
+					console.log('its equal');
+				}else{
+					console.log('not equal');
+				}
+			});
+		}
+	}
+})
+
+app.directive('errorRoute', function(){
+	return{
+		restrict: 'E',
+		template: '<div class="col-md-4">'+
+            '<button class="btn btn-success" ng-click="newView(\'/error\')">'+
+            'regular route and echo start/finish text below </button>'+
         	'</div>',
        require: '^someController',
 		link: function(scope, element, attrs, someController){
