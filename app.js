@@ -65,7 +65,7 @@ app.config(function($routeProvider){
 app.directive('routeDirective', function(){
 	return{
 		restrict: 'A',
-		controller: function($scope, $location, $rootScope){
+		controller: function($scope, $rootScope){
 			$rootScope.$on('$routeChangeStart', function(){
 				console.log('the route is starting to change');
 				
@@ -78,7 +78,7 @@ app.directive('routeDirective', function(){
 				
 			});
 			$rootScope.$on('$routeChangeError', function(){
-				console.log('error loading the route');
+				console.log('error loading route. Notice the view did not change.');
 			})
 		}
 		
