@@ -5,15 +5,15 @@ var app = angular.module('app',['ngRoute']);
 app.config(function($routeProvider, $locationProvider){
 	$routeProvider
 		.when('/',{
-			template: '<h3>The view attached to the home route would be showing now</h3>'
+			template: '<h4>The view attached to the <h2>Root route</h2> would be showing now</h4>'
 			
 		})
 		.when('/regular',{
-			template: '<h3>The view attached to the regular route would be showing now</h3>'
+			template: '<h4>The view attached to the <h2>Regular route</h2> would be showing now</h4>'
 			
 		})
 		.when('/delayed',{
-			template: '<h3>The view attached to the Delayed route would be showing now</h3>',
+			template: '<h4>The view attached to the <h2>Delayed route</h2> would be showing now</h4>',
 			resolve: {
 				delay: function($q, $timeout){
 					var defer = $q.defer();
@@ -38,7 +38,7 @@ app.config(function($routeProvider, $locationProvider){
 						defer.reject();
 					}, 300);
 
-					return defer.promise;
+					return defer.promise;	
 
 				}
 			}
@@ -77,19 +77,18 @@ app.directive('routeDirective', function(){
 	}
 })
 
-
+//
 app.directive('someController', function(){
 	return{
 		controller: function($scope, $location, $rootScope,$q, $timeout){
-			$scope.check = '';
+			
 
 			$scope.newView = function(arg){
 				$location.path(arg);
-				$scope.check = arg;
+				
 			}
 
 
-			$scope.check2 = 'check2';
 
 		}
 	}
@@ -100,18 +99,8 @@ app.directive('regularRoute', function(){
 		restrict: 'E',
 		template: '<div class="col-md-4">'+
             '<button class="btn btn-success" ng-click="newView(\'/regular\')">'+
-            'regular route and echo start/finish text below </button>'+
-        	'</div>',
-       require: '^someController',
-		link: function(scope, element, attrs, someController){
-			element.bind('click',function(){
-				if(scope.check == '/regular'){
-					console.log('its equal');
-				}else{
-					console.log('not equal');
-				}
-			});
-		}
+            'Click to activate the Regular route</button>'+
+        	'</div>'
 	}
 })
 
@@ -120,19 +109,9 @@ app.directive('delayedRoute', function(){
 	return{
 		restrict: 'E',
 		template: '<div class="col-md-4">'+
-            '<button class="btn btn-success" ng-click="newView(\'/delayed\')">'+
-            'regular route and echo start/finish text below </button>'+
-        	'</div>',
-       require: '^someController',
-		link: function(scope, element, attrs, someController){
-			element.bind('click',function(){
-				if(scope.check == '/delayed'){
-					console.log('its equal');
-				}else{
-					console.log('not equal');
-				}
-			});
-		}
+            '<button class="btn btn-warning" ng-click="newView(\'/delayed\')">'+
+            'Click to activate the Delayed route</button>'+
+        	'</div>'
 	}
 })
 
@@ -140,18 +119,9 @@ app.directive('errorRoute', function(){
 	return{
 		restrict: 'E',
 		template: '<div class="col-md-4">'+
-            '<button class="btn btn-success" ng-click="newView(\'/error\')">'+
-            'regular route and echo start/finish text below </button>'+
-        	'</div>',
-       require: '^someController',
-		link: function(scope, element, attrs, someController){
-			element.bind('click',function(){
-				if(scope.check == '/delayed'){
-					console.log('its equal');
-				}else{
-					console.log('not equal');
-				}
-			});
-		}
+            '<button class="btn btn-danger" ng-click="newView(\'/error\')">'+
+            'Click to activate Error route </button>'+
+        	'</div>'
+       
 	}
 })
