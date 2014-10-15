@@ -14,6 +14,7 @@ app.config(function($routeProvider, $locationProvider){
 			template: '<h4>The view attached to the </h4>'+
 					'<h2>Regular route</h2>'+
 					'<h4>would be showing now</h4>'
+					
 			
 		})
 		.when('/delayed',{
