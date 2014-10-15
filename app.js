@@ -57,16 +57,14 @@ app.directive('routeDirective', function(){
 		restrict: 'A',
 		controller: function($scope, $location, $rootScope){
 			$rootScope.$on('$routeChangeStart', function(){
-				$scope.finish = '';
 				console.log('the route is starting to change');
-				$scope.changing = 'Scope is changing';
+				
 
 
 			});
 			$rootScope.$on('$routeChangeSuccess', function(){
-				$scope.changing = '';
 				console.log('the route is done changing');
-				$scope.finish = 'Scope is finished';
+				
 				
 			});
 			$rootScope.$on('$routeChangeError', function(){
