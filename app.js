@@ -76,11 +76,9 @@ app.directive('routeDirective', function(){
 })
 
 //
-app.directive('someController', function(){
+app.directive('routerLogic', function(){
 	return{
 		controller: function($scope, $location, $rootScope,$q, $timeout){
-			
-
 			$scope.newView = function(arg){
 				$location.path(arg);
 				
